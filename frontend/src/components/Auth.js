@@ -17,10 +17,7 @@ const Auth = () => {
     setError("");
     try {
       const endpoint = isSignup ? "/api/auth/signup" : "/api/auth/login";
-      const { data } = await axios.post(
-        `http://localhost:5000${endpoint}`,
-        form
-      );
+      const { data } = await axios.post(endpoint, form);
       login(data.token, data.user);
       navigate("/dashboard");
     } catch (err) {

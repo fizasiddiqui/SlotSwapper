@@ -16,10 +16,10 @@ const Requests = () => {
     try {
       setLoading(true);
       const [incomingRes, outgoingRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/swaps/incoming", {
+        axios.get("/api/swaps/incoming", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }),
-        axios.get("http://localhost:5000/api/swaps/outgoing", {
+        axios.get("/api/swaps/outgoing", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }),
       ]);
@@ -35,7 +35,7 @@ const Requests = () => {
   const respond = async (requestId, accepted) => {
     try {
       await axios.post(
-        `http://localhost:5000/api/swaps/swap-response/${requestId}`,
+        `/api/swaps/swap-response/${requestId}`,
         { accepted },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

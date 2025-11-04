@@ -20,7 +20,7 @@ const Dashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/events", {
+      const { data } = await axios.get("/api/events", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setEvents(data);
@@ -33,7 +33,7 @@ const Dashboard = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/events", form, {
+      await axios.post("/api/events", form, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setForm({ title: "", startTime: "", endTime: "", status: "BUSY" });
@@ -48,7 +48,7 @@ const Dashboard = () => {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/events/${id}`,
+        `/api/events/${id}`,
         { status },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

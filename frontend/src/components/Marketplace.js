@@ -18,12 +18,9 @@ const Marketplace = () => {
   const fetchSlots = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        "http://localhost:5000/api/swaps/swappable-slots",
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
+      const { data } = await axios.get("/api/swaps/swappable-slots", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       setSlots(data);
     } catch (error) {
       console.error("Error fetching slots:", error);
@@ -34,7 +31,7 @@ const Marketplace = () => {
 
   const fetchUserSlots = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/events", {
+      const { data } = await axios.get("/api/events", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setUserSlots(data.filter((e) => e.status === "SWAPPABLE"));
@@ -46,7 +43,7 @@ const Marketplace = () => {
   const requestSwap = async (theirSlotId, mySlotId) => {
     try {
       await axios.post(
-        "http://localhost:5000/api/swaps/swap-request",
+        "/api/swaps/swap-request",
         { mySlotId, theirSlotId },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
