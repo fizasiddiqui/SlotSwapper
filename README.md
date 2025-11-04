@@ -76,7 +76,10 @@ A full-stack web application for swapping time slots between users. Built with R
 4. Set environment variables in Vercel dashboard:
    - Go to your project in Vercel dashboard
    - Navigate to Settings > Environment Variables
-   - Add `MONGO_URI` and `JWT_SECRET`
+   - Add the following environment variables (set them as plain text, not referencing secrets unless you've created the secrets first):
+     - `MONGO_URI`: Your MongoDB Atlas connection string
+     - `JWT_SECRET`: A secure secret key for JWT token generation
+   - If you prefer to use secrets, first create them in the Secrets section of your Vercel account, then reference them in the environment variables (e.g., `@mongo_uri` for MONGO_URI).
 
 5. Redeploy to apply environment variables:
    ```bash
