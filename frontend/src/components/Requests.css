@@ -1,0 +1,487 @@
+/*
+========================================
+  1. Root & Design Tokens
+========================================
+*/
+:root {
+  /* Colors */
+  --bg-main: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --panel-bg: rgba(255, 255, 255, 0.98);
+  --primary: #667eea;
+  --primary-dark: #5a67d8;
+  --success: #48bb78;
+  --success-dark: #38a169;
+  --danger: #f56565;
+  --danger-dark: #e53e3e;
+  --info: #4facfe;
+  --info-bg-light: rgba(79, 172, 254, 0.1);
+  --info-border: rgba(79, 172, 254, 0.2);
+  
+  /* Text */
+  --text-dark: #1a202c;
+  --text-light: #2d3748;
+  --text-muted: #4a5568;
+  
+  /* Borders */
+  --border-light: rgba(255, 255, 255, 0.4);
+  
+  /* Spacing */
+  --spacing-unit: 20px;
+  
+  /* Border Radius */
+  --border-radius-small: 8px;
+  --border-radius-medium: 12px;
+  --border-radius-large: 20px;
+  
+  /* Shadows */
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-success: 0 6px 16px rgba(56, 161, 105, 0.4);
+  --shadow-danger: 0 6px 16px rgba(229, 62, 62, 0.4);
+
+  /* Transitions */
+  --transition-speed: 0.3s;
+  --transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+========================================
+  2. Global Styles & Layout
+========================================
+*/
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-light);
+  background: var(--bg-main);
+}
+
+.page-wrap {
+  min-height: 100vh;
+  padding: var(--spacing-unit);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* <--- CHANGED */
+  gap: var(--spacing-unit);
+  margin-top: calc(var(--spacing-unit) * 1.5); /* 30px */
+  max-width: 1200px; /* You might want to make this smaller, e.g., 800px */
+  width: 100%;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 0.75); /* 15px */
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  font-weight: 600;
+  border-bottom: 3px solid var(--primary);
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+/* NEW: Utility class from request.js */
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+
+/*
+========================================
+  3. Components
+========================================
+*/
+
+/* --- Panel --- */
+.panel {
+  background: var(--panel-bg);
+  border-radius: var(--border-radius-medium);
+  padding: calc(var(--spacing-unit) * 1.5); /* 30px */
+  box-shadow: var(--shadow-medium);
+  border: 1px solid var(--border-light);
+}
+
+.panel.empty {
+  text-align: center;
+  color: var(--text-light);
+  padding: calc(var(--spacing-unit) * 3) var(--spacing-unit); /* 60px 20px */
+}
+
+.empty-emoji {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* --- Request Box --- */
+.request-box {
+  background: var(--panel-bg);
+  padding: var(--spacing-unit);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-medium);
+  border: 2px solid var(--info-border);
+  border-left: 6px solid var(--primary);
+  transition: transform var(--transition-speed) var(--transition-ease),
+              box-shadow var(--transition-speed) var(--transition-ease),
+              border-color var(--transition-speed) var(--transition-ease);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.request-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-speed) ease;
+}
+
+.request-box:hover::before {
+  transform: scaleX(1);
+}
+
+.request-box:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--shadow-heavy);
+  border-color: var(--primary);
+}
+
+.box-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.box-head .who {
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.box-head .who::before {
+  content: '👤';
+  font-size: 1.1rem;
+}
+
+.box-head .when {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  background: var(--info-bg-light);
+  padding: 4px 8px;
+  border-radius: var(--border-radius-small);
+  border: 1px solid var(--info-border);
+}
+
+.box-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 12px;
+  flex-grow: 1; /* Pushes footer down */
+}
+
+/* --- Slot (UPDATED) --- */
+/*
+ * I removed the heavy left-border. It competed
+ * with the card's main left-border. This is
+ * cleaner and makes the card feel more like one unit.
+ */
+.slot {
+  background: var(--info-bg-light); /* Was a gradient */
+  padding: 18px;
+  border-radius: var(--border-radius-medium);
+  border: 1px solid var(--info-border); /* Was border-left */
+  position: relative;
+  transition: transform var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease;
+}
+
+.slot:hover {
+  transform: translateX(2px);
+  box-shadow: var(--shadow-light);
+}
+
+.slot-title {
+  font-weight: 500;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slot-title::before {
+  content: '📅';
+  font-size: 1rem;
+}
+
+.slot-main {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.slot-time {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  font-style: italic;
+  background: rgba(79, 172, 254, 0.05);
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: block; /* UPDATED: Better for long date strings */
+}
+
+.box-foot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: auto;
+}
+
+/* NEW: Layout for Accept/Reject buttons */
+.actions {
+  display: flex;
+  gap: 15px;
+  width: 100%; /* Make buttons fill footer */
+}
+
+/* NEW: Layout for the status badge */
+.status-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+
+/* --- Button --- */
+.btn {
+  padding: 12px 24px;
+  border-radius: var(--border-radius-medium);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-speed) var(--transition-ease);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-medium);
+  font-size: 0.95rem;
+  min-width: 100px;
+  flex-grow: 1; /* NEW: Make buttons in .actions share space */
+}
+
+.btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* NEW: Disabled state from request.js */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-light);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+.btn.accept:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--success-dark) 0%, var(--success) 100%);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-success);
+}
+.btn.reject:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--danger-dark) 0%, var(--danger) 100%);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-danger);
+}
+
+.btn.accept {
+  background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
+  color: white;
+  border: 2px solid var(--success);
+}
+
+.btn.reject {
+  background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+  color: white;
+  border: 2px solid var(--danger);
+}
+
+
+/* --- Status Badge --- */
+.status-badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: var(--border-radius-large);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-light);
+}
+
+.status-badge.pending {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #92400e;
+}
+
+.status-badge.accepted {
+  background: linear-gradient(135deg, #38a169, #2f855a);
+  color: white;
+}
+
+.status-badge.rejected {
+  background: linear-gradient(135deg, #e53e3e, #c53030);
+  color: white;
+}
+
+/* --- Toast --- */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 14px 20px;
+  border-radius: var(--border-radius-medium);
+  color: white;
+  font-weight: 500;
+  box-shadow: var(--shadow-heavy);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeIn 0.5s ease-in-out;
+  z-index: 1000;
+}
+
+/* NEW: Class from request.js */
+.toast-text {
+  flex-grow: 1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.toast.success { background: var(--success); }
+.toast.error { background: var(--danger-dark); }
+
+.toast-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+/*
+========================================
+  4. Media Queries (Responsive)
+========================================
+*/
+@media (max-width: 1200px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-unit);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-wrap {
+    padding: calc(var(--spacing-unit) * 0.75); /* 15px */
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+  }
+  
+  .panel {
+    padding: var(--spacing-unit); /* 20px */
+  }
+  
+  .request-box {
+    padding: calc(var(--spacing-unit) * 0.75); /* 15px */
+    max-width: 100%;
+  }
+  
+  /* UPDATED: Already stacked, but this is cleaner */
+  .box-foot {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .actions {
+    flex-direction: column; /* Stack buttons on small screens */
+  }
+
+  .btn {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  .request-box {
+    padding: var(--border-radius-medium); /* 12px */
+  }
+  
+  .slot {
+    padding: var(--border-radius-medium); /* 12px */
+  }
+  
+  .slot-main {
+    font-size: 1rem;
+  }
+  
+  .toast {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+  }
+}
